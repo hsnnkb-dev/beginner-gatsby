@@ -4,7 +4,8 @@ import {Link, graphql} from 'gatsby';
 import * as styles from '../../styles/projects.module.css'
 
 export default function Projects({ data }) {
-  const projects = data.allMarkdownRemark.nodes;
+  const projects = data.projects.nodes;
+  const contact = data.contact.siteMetadata.contact;
   
   return (
     <Layout>
@@ -21,6 +22,7 @@ export default function Projects({ data }) {
             </Link>
           ))}
         </div>
+        <p>Email me at {contact}</p>
       </div>
     </Layout>
   )
@@ -29,7 +31,7 @@ export default function Projects({ data }) {
 // export page query
 export const query = graphql`
   query ProjectsPage {
-    allMarkdownRemark {
+    projects: allMarkdownRemark(sort: {fields: frontmatter___date, order: DESC}) {
       nodes {
         frontmatter {
           slug
@@ -37,6 +39,11 @@ export const query = graphql`
           title
         }
         id
+      }
+    }
+    contact: site {
+      siteMetadata {
+        contact
       }
     }
   }
